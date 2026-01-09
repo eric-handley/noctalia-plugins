@@ -1,0 +1,15 @@
+{
+    "panel": {
+        "title": "Zamanlayıcı",
+        "countdown": "Geri sayım",
+        "stopwatch": "Kronometre",
+        "start": "Başlat",
+        "pause": "Duraklat",
+        "resume": "Devam et",
+        "reset": "Sıfırla"
+    },
+    "toast": {
+        "title": "Zamanlayıcı",
+        "finished": "Zamanlayıcı bitti!"
+    }
+}

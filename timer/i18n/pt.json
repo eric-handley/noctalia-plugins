@@ -1,0 +1,15 @@
+{
+    "panel": {
+        "title": "Temporizador",
+        "countdown": "Contagem regressiva",
+        "stopwatch": "Cronômetro",
+        "start": "Iniciar",
+        "pause": "Pausar",
+        "resume": "Retomar",
+        "reset": "Reiniciar"
+    },
+    "toast": {
+        "title": "Temporizador",
+        "finished": "Temporizador finalizado!"
+    }
+}

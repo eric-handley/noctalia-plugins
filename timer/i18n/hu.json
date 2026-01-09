@@ -1,0 +1,15 @@
+{
+    "panel": {
+        "title": "Időzítő",
+        "countdown": "Visszaszámlálás",
+        "stopwatch": "Stopper",
+        "start": "Indítás",
+        "pause": "Szünet",
+        "resume": "Folytatás",
+        "reset": "Visszaállítás"
+    },
+    "toast": {
+        "title": "Időzítő",
+        "finished": "Időzítő lejárt!"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "panel": {
+        "title": "计时器",
+        "countdown": "倒计时",
+        "stopwatch": "秒表",
+        "start": "开始",
+        "pause": "暂停",
+        "resume": "继续",
+        "reset": "重置"
+    },
+    "toast": {
+        "title": "计时器",
+        "finished": "计时器结束！"
+    }
+}

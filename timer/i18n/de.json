@@ -1,0 +1,15 @@
+{
+    "panel": {
+        "title": "Timer",
+        "countdown": "Countdown",
+        "stopwatch": "Stoppuhr",
+        "start": "Start",
+        "pause": "Pause",
+        "resume": "Fortsetzen",
+        "reset": "Zurücksetzen"
+    },
+    "toast": {
+        "title": "Timer",
+        "finished": "Timer abgelaufen!"
+    }
+}
