@@ -7,6 +7,7 @@
     "license": "MIT",
     "repository": "https://github.com/cleboost/noctalia-translator",
     "description": "Quick translate in launcher",
+    "tags": ["Launcher"],
     "entryPoints": {
       "launcherProvider": "LauncherProvider.qml",
       "settings": "Settings.qml"
