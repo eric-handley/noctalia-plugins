@@ -184,7 +184,7 @@ Rectangle {
     onClicked: (mouse) => {
       if (mouse.button === Qt.LeftButton) {
           if (pluginApi) {
-            pluginApi.togglePanel(root.screen, root)
+            pluginApi.openPanel(root.screen, root)
           }
       } else if (mouse.button === Qt.RightButton) {
           var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
