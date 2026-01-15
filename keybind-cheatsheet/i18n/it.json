@@ -31,7 +31,11 @@
       "refresh-message": "Le scorciatoie verranno ricaricate all'apertura del pannello.",
       "reset-defaults": "Ripristina Predefiniti",
       "reset-message": "Le impostazioni sono state ripristinate ai valori predefiniti.",
-      "saved": "Impostazioni salvate con successo."
+      "saved": "Impostazioni salvate con successo.",
+      "keybind-setup": "Configurazione Scorciatoia",
+      "keybind-setup-description": "Per aprire il cheatsheet con una scorciatoia, aggiungi questo bind alla configurazione del tuo compositor:",
+      "keybind-example-hyprland": "Hyprland: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call \"keybind-cheatsheet\" \"toggle\"",
+      "keybind-example-niri": "Niri: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"keybind-cheatsheet\" \"toggle\"; }"
     }
   }
 }

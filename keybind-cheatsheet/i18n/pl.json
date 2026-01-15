@@ -31,7 +31,11 @@
       "refresh-message": "Skroty zostana przeladowane po otwarciu panelu.",
       "reset-defaults": "Przywroc Domyslne",
       "reset-message": "Ustawienia zostaly przywrocone do domyslnych.",
-      "saved": "Ustawienia zapisane pomyslnie."
+      "saved": "Ustawienia zapisane pomyslnie.",
+      "keybind-setup": "Konfiguracja Skrotu",
+      "keybind-setup-description": "Aby otworzyc cheatsheet skrotem klawiszowym, dodaj ten bind do konfiguracji kompozytora:",
+      "keybind-example-hyprland": "Przyklad Hyprland: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call \"keybind-cheatsheet\" \"toggle\"",
+      "keybind-example-niri": "Przyklad Niri: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"keybind-cheatsheet\" \"toggle\"; }"
     }
   }
 }

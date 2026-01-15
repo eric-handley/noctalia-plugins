@@ -414,6 +414,72 @@ ColumnLayout {
     }
   }
 
+  // Keybind Command Info
+  NBox {
+    Layout.fillWidth: true
+    Layout.preferredHeight: keybindContent.implicitHeight + Style.marginM * 2
+    color: Color.mSurfaceVariant
+
+    ColumnLayout {
+      id: keybindContent
+      anchors.fill: parent
+      anchors.margins: Style.marginM
+      spacing: Style.marginS
+
+      NText {
+        text: pluginApi?.tr("keybind-cheatsheet.settings.keybind-setup") || "Keybind Setup"
+        pointSize: Style.fontSizeL
+        font.weight: Style.fontWeightBold
+        color: Color.mOnSurface
+      }
+
+      NText {
+        text: pluginApi?.tr("keybind-cheatsheet.settings.keybind-setup-description") ||
+          "To open the cheatsheet with a keyboard shortcut, add this bind to your compositor config:"
+        color: Color.mOnSurfaceVariant
+        pointSize: Style.fontSizeS
+        Layout.fillWidth: true
+        wrapMode: Text.WordWrap
+      }
+
+      Rectangle {
+        Layout.fillWidth: true
+        Layout.preferredHeight: commandText.implicitHeight + Style.marginS * 2
+        color: Color.mSurface
+        radius: Style.radiusS
+
+        NText {
+          id: commandText
+          anchors.fill: parent
+          anchors.margins: Style.marginS
+          text: "qs -c \"noctalia-shell\" ipc call \"keybind-cheatsheet\" \"toggle\""
+          font.family: "monospace"
+          pointSize: Style.fontSizeS
+          color: Color.mPrimary
+          wrapMode: Text.WrapAnywhere
+        }
+      }
+
+      NText {
+        text: pluginApi?.tr("keybind-cheatsheet.settings.keybind-example-hyprland") ||
+          "Hyprland example: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call \"keybind-cheatsheet\" \"toggle\""
+        color: Color.mOnSurfaceVariant
+        pointSize: Style.fontSizeXS
+        Layout.fillWidth: true
+        wrapMode: Text.WordWrap
+      }
+
+      NText {
+        text: pluginApi?.tr("keybind-cheatsheet.settings.keybind-example-niri") ||
+          "Niri example: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"keybind-cheatsheet\" \"toggle\"; }"
+        color: Color.mOnSurfaceVariant
+        pointSize: Style.fontSizeXS
+        Layout.fillWidth: true
+        wrapMode: Text.WordWrap
+      }
+    }
+  }
+
   // Spacer
   Item {
     Layout.fillHeight: true

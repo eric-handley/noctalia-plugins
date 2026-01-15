@@ -31,7 +31,11 @@
       "refresh-message": "Les raccourcis seront recharges a l'ouverture du panneau.",
       "reset-defaults": "Reinitialiser par Defaut",
       "reset-message": "Les parametres ont ete reinitialises par defaut.",
-      "saved": "Parametres enregistres avec succes."
+      "saved": "Parametres enregistres avec succes.",
+      "keybind-setup": "Configuration du Raccourci",
+      "keybind-setup-description": "Pour ouvrir le cheatsheet avec un raccourci clavier, ajoutez ce bind a la configuration de votre compositeur:",
+      "keybind-example-hyprland": "Hyprland: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call \"keybind-cheatsheet\" \"toggle\"",
+      "keybind-example-niri": "Niri: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"keybind-cheatsheet\" \"toggle\"; }"
     }
   }
 }

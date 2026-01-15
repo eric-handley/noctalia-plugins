@@ -32,6 +32,10 @@ Item {
   onRawCategoriesChanged: {
     categories = processCategories(rawCategories);
     updateColumnItems();
+    // Hide error view when data is loaded
+    if (rawCategories.length > 0) {
+      errorView.visible = false;
+    }
   }
 
   onCategoriesChanged: {
@@ -100,8 +104,31 @@ Item {
     return Math.max(300, Math.min(totalHeight, 1200));
   }
 
-  onPluginApiChanged: { if (pluginApi) checkAndGenerate(); }
-  Component.onCompleted: { if (pluginApi) checkAndGenerate(); }
+  // Flag to prevent re-parsing when settings are still loading
+  property bool settingsReady: false
+
+  onPluginApiChanged: {
+    if (pluginApi) {
+      // Small delay to allow settings to load properly after boot
+      settingsLoadTimer.restart();
+    }
+  }
+
+  Component.onCompleted: {
+    if (pluginApi) {
+      settingsLoadTimer.restart();
+    }
+  }
+
+  Timer {
+    id: settingsLoadTimer
+    interval: 100  // 100ms delay to allow settings to load
+    repeat: false
+    onTriggered: {
+      root.settingsReady = true;
+      checkAndGenerate();
+    }
+  }
 
   function detectCompositor() {
     var hyprlandSig = Quickshell.env("HYPRLAND_INSTANCE_SIGNATURE");
@@ -148,7 +175,16 @@ Item {
   }
 
   function checkAndGenerate() {
-    if (root.rawCategories.length === 0) {
+    // Check if settings are ready and we actually need to generate
+    if (!settingsReady) return;
+
+    // Get the actual cheatsheetData from settings
+    var savedData = pluginApi?.pluginSettings?.cheatsheetData;
+
+    // Check if data exists and is a non-empty array
+    var hasData = Array.isArray(savedData) && savedData.length > 0;
+
+    if (!hasData) {
       isLoading = true;
       allLines = [];
 
@@ -215,6 +251,77 @@ Item {
     }
   }
 
+  // ========== SHARED KEY FORMATTING ==========
+  function formatSpecialKey(key) {
+    var keyMap = {
+      // Audio keys (mixed case for Niri)
+      "XF86AudioRaiseVolume": "Vol +",
+      "XF86AudioLowerVolume": "Vol -",
+      "XF86AudioMute": "Mute",
+      "XF86AudioMicMute": "Mic Mute",
+      "XF86AudioPlay": "Play",
+      "XF86AudioPause": "Pause",
+      "XF86AudioNext": "Next",
+      "XF86AudioPrev": "Prev",
+      "XF86AudioStop": "Stop",
+      "XF86AudioMedia": "Media",
+      // Audio keys (uppercase for Hyprland)
+      "XF86AUDIORAISEVOLUME": "Vol +",
+      "XF86AUDIOLOWERVOLUME": "Vol -",
+      "XF86AUDIOMUTE": "Mute",
+      "XF86AUDIOMICMUTE": "Mic Mute",
+      "XF86AUDIOPLAY": "Play",
+      "XF86AUDIOPAUSE": "Pause",
+      "XF86AUDIONEXT": "Next",
+      "XF86AUDIOPREV": "Prev",
+      "XF86AUDIOSTOP": "Stop",
+      "XF86AUDIOMEDIA": "Media",
+      // Brightness keys (mixed case)
+      "XF86MonBrightnessUp": "Bright +",
+      "XF86MonBrightnessDown": "Bright -",
+      // Brightness keys (uppercase)
+      "XF86MONBRIGHTNESSUP": "Bright +",
+      "XF86MONBRIGHTNESSDOWN": "Bright -",
+      // Other common keys (mixed case)
+      "XF86Calculator": "Calc",
+      "XF86Mail": "Mail",
+      "XF86Search": "Search",
+      "XF86Explorer": "Files",
+      "XF86WWW": "Browser",
+      "XF86HomePage": "Home",
+      "XF86Favorites": "Favorites",
+      "XF86PowerOff": "Power",
+      "XF86Sleep": "Sleep",
+      "XF86Eject": "Eject",
+      // Other common keys (uppercase)
+      "XF86CALCULATOR": "Calc",
+      "XF86MAIL": "Mail",
+      "XF86SEARCH": "Search",
+      "XF86EXPLORER": "Files",
+      "XF86WWW": "Browser",
+      "XF86HOMEPAGE": "Home",
+      "XF86FAVORITES": "Favorites",
+      "XF86POWEROFF": "Power",
+      "XF86SLEEP": "Sleep",
+      "XF86EJECT": "Eject",
+      // Print screen
+      "Print": "PrtSc",
+      "PRINT": "PrtSc",
+      // Navigation
+      "Prior": "PgUp",
+      "Next": "PgDn",
+      "PRIOR": "PgUp",
+      "NEXT": "PgDn",
+      // Mouse (for Hyprland)
+      "MOUSE_DOWN": "Scroll Down",
+      "MOUSE_UP": "Scroll Up",
+      "MOUSE:272": "Left Click",
+      "MOUSE:273": "Right Click",
+      "MOUSE:274": "Middle Click"
+    };
+    return keyMap[key] || key;
+  }
+
   // ========== HYPRLAND PARSER ==========
   function parseHyprlandConfig(text) {
     var lines = text.split('\n');
@@ -241,7 +348,7 @@ Item {
             if (bindPart.includes("SHIFT")) mod += (mod ? " + Shift" : "Shift");
             if (bindPart.includes("CTRL")) mod += (mod ? " + Ctrl" : "Ctrl");
             if (bindPart.includes("ALT")) mod += (mod ? " + Alt" : "Alt");
-            var key = keyPart.toUpperCase();
+            var key = formatSpecialKey(keyPart.toUpperCase());
             var fullKey = mod + (mod && key ? " + " : "") + key;
             currentCat.binds.push({ "keys": fullKey, "desc": desc });
           }
@@ -272,15 +379,24 @@ Item {
       "focus-workspace": "Workspace Navigation",
       "move-column": "Move Columns",
       "move-window": "Move Windows",
+      "move-window-to-workspace": "Move Windows",
       "consume-window": "Window Management",
       "expel-window": "Window Management",
       "close-window": "Window Management",
       "fullscreen-window": "Window Management",
+      "toggle-window-floating": "Window Management",
       "maximize-column": "Column Management",
+      "center-column": "Column Management",
       "set-column-width": "Column Width",
       "switch-preset-column-width": "Column Width",
       "reset-window-height": "Window Size",
+      "set-window-height": "Window Size",
+      "switch-preset-window-height": "Window Size",
       "screenshot": "Screenshots",
+      "screenshot-window": "Screenshots",
+      "screenshot-screen": "Screenshots",
+      "toggle-overview": "Navigation",
+      "show-hotkey-overlay": "System",
       "power-off-monitors": "Power",
       "quit": "System",
       "toggle-animation": "Animations"
@@ -319,11 +435,20 @@ Item {
 
       if (line.length === 0) continue;
 
-      var bindMatch = line.match(/^([A-Za-z0-9_+]+)\s*(?:[a-z\-]+=\S+\s*)*\{\s*([^}]+)\s*\}/);
+      // Parse keybind line - handle hotkey-overlay-title and other attributes
+      var bindMatch = line.match(/^([A-Za-z0-9_+]+)\s*(.*?)\{\s*([^}]+)\s*\}/);
 
       if (bindMatch) {
         var keyCombo = bindMatch[1];
-        var action = bindMatch[2].trim().replace(/;$/, '');
+        var attributes = bindMatch[2].trim();
+        var action = bindMatch[3].trim().replace(/;$/, '');
+
+        // Extract hotkey-overlay-title if present
+        var hotkeyTitle = null;
+        var titleMatch = attributes.match(/hotkey-overlay-title="([^"]+)"/);
+        if (titleMatch) {
+          hotkeyTitle = titleMatch[1];
+        }
 
         var formattedKeys = formatNiriKeyCombo(keyCombo);
         var category = currentCategory || getNiriCategory(action, actionCategories);
@@ -332,9 +457,12 @@ Item {
           categorizedBinds[category] = [];
         }
 
+        // Use hotkey-overlay-title if available, otherwise format action
+        var description = hotkeyTitle || formatNiriAction(action);
+
         categorizedBinds[category].push({
           "keys": formattedKeys,
-          "desc": formatNiriAction(action)
+          "desc": description
         });
       }
     }
@@ -343,7 +471,7 @@ Item {
       "Applications", "Window Management", "Column Navigation",
       "Window Focus", "Workspace Navigation", "Move Columns",
       "Move Windows", "Column Management", "Column Width",
-      "Window Size", "Screenshots", "Power", "System", "Animations"
+      "Window Size", "Screenshots", "Navigation", "Power", "System", "Animations"
     ];
 
     var cats = [];
@@ -370,7 +498,8 @@ Item {
   }
 
   function formatNiriKeyCombo(combo) {
-    return combo
+    // First handle modifiers
+    var formatted = combo
       .replace(/Mod\+/g, "Super + ")
       .replace(/Super\+/g, "Super + ")
       .replace(/Ctrl\+/g, "Ctrl + ")
@@ -379,14 +508,47 @@ Item {
       .replace(/Shift\+/g, "Shift + ")
       .replace(/Win\+/g, "Super + ")
       .replace(/\+\s*$/, "")
-      .replace(/\s+/g, " ");
+      .replace(/\s+/g, " ")
+      .trim();
+
+    // Then format special keys (XF86, Print, etc.)
+    var parts = formatted.split(" + ");
+    var formattedParts = parts.map(function(part) {
+      var trimmed = part.trim();
+      // Only format non-modifier keys
+      if (["Super", "Ctrl", "Alt", "Shift"].indexOf(trimmed) === -1) {
+        return formatSpecialKey(trimmed);
+      }
+      return trimmed;
+    });
+    return formattedParts.join(" + ");
   }
 
   function formatNiriAction(action) {
     if (action.startsWith("spawn")) {
-      var spawnMatch = action.match(/spawn\s+"([^"]+)"/);
-      if (spawnMatch) return "Run: " + spawnMatch[1];
+      // Extract all quoted arguments from spawn command
+      var args = [];
+      var regex = /"([^"]+)"/g;
+      var match;
+      while ((match = regex.exec(action)) !== null) {
+        args.push(match[1]);
+      }
+      if (args.length > 0) {
+        // Show command and key arguments, skip very long technical args
+        var displayArgs = args.map(function(arg) {
+          // Skip environment variable patterns and very long args
+          if (arg.startsWith("@") || arg.length > 30) return null;
+          return arg;
+        }).filter(function(arg) { return arg !== null; });
+        return "Run: " + displayArgs.join(" ");
+      }
       return action;
+    }
+    // Handle actions with parameters like "focus-workspace 1"
+    var parts = action.split(/\s+/);
+    if (parts.length > 1) {
+      var actionName = parts[0].replace(/-/g, ' ').replace(/\b\w/g, function(l) { return l.toUpperCase(); });
+      return actionName + " " + parts.slice(1).join(" ");
     }
     return action.replace(/-/g, ' ').replace(/\b\w/g, function(l) { return l.toUpperCase(); });
   }

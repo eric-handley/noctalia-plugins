@@ -31,7 +31,11 @@
       "refresh-message": "Tastenkurzel werden beim Offnen des Panels neu geladen.",
       "reset-defaults": "Auf Standard zurucksetzen",
       "reset-message": "Einstellungen wurden auf Standard zuruckgesetzt.",
-      "saved": "Einstellungen erfolgreich gespeichert."
+      "saved": "Einstellungen erfolgreich gespeichert.",
+      "keybind-setup": "Tastenkurzel-Einrichtung",
+      "keybind-setup-description": "Um die Ubersicht mit einer Tastenkombination zu offnen, fuge diese Bindung zu deiner Compositor-Konfiguration hinzu:",
+      "keybind-example-hyprland": "Hyprland: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call \"keybind-cheatsheet\" \"toggle\"",
+      "keybind-example-niri": "Niri: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"keybind-cheatsheet\" \"toggle\"; }"
     }
   }
 }
