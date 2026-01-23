@@ -26,8 +26,8 @@
       "saved": "设置保存成功。",
       "keybind-setup": "快捷键设置",
       "keybind-setup-description": "要使用键盘快捷键打开速查表，请将此绑定添加到合成器配置中:",
-      "keybind-example-hyprland": "Hyprland: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call \"keybind-cheatsheet\" \"toggle\"",
-      "keybind-example-niri": "Niri: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"keybind-cheatsheet\" \"toggle\"; }",
+      "keybind-example-hyprland": "Hyprland: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call \"plugin:keybind-cheatsheet\" \"toggle\"",
+      "keybind-example-niri": "Niri: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"plugin:keybind-cheatsheet\" \"toggle\"; }",
       "mod-var": "Mod 键变量",
       "mod-var-hint": "用于 Super 键的变量名称（例如 $mod 或 $mainMod）。"
     }
