@@ -15,6 +15,29 @@ NIconButton {
     property string section: ""
 
     readonly property var mainInstance: pluginApi?.mainInstance
+    readonly property bool hideInactive: 
+        pluginApi?.pluginSettings?.hideInactive ?? 
+        pluginApi?.manifest?.metadata?.defaultSettings?.hideInactive ?? 
+        false
+
+    readonly property bool shouldShow: !hideInactive || (mainInstance?.isRecording ?? false) || (mainInstance?.isPending ?? false)
+
+    visible: true
+    opacity: shouldShow ? 1.0 : 0.0
+    implicitWidth: shouldShow ? baseSize : 0
+    implicitHeight: shouldShow ? baseSize : 0
+
+    Behavior on opacity {
+        NumberAnimation { duration: Style.animationNormal }
+    }
+
+    Behavior on implicitWidth {
+        NumberAnimation { duration: Style.animationNormal }
+    }
+
+    Behavior on implicitHeight {
+        NumberAnimation { duration: Style.animationNormal }
+    }
 
     enabled: mainInstance?.isAvailable ?? false
     icon: "camera-video"
