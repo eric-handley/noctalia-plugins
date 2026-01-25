@@ -40,7 +40,7 @@
       "version": "1.1.0",
       "author": "blackbartblues",
       "description": "Advanced clipboard manager with history, search, keyboard navigation, and ToDo integration.",
-      "repository": "https://github.com/blackbartblues/noctalia-clipper",
+      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
       "minNoctaliaVersion": "4.1.2",
       "license": "MIT",
       "tags": [
@@ -49,7 +49,7 @@
         "Bar",
         "Panel"
       ],
-      "lastUpdated": "2026-01-22T23:28:50+01:00"
+      "lastUpdated": "2026-01-25T13:32:54-05:00"
     },
     {
       "id": "currency-exchange",
